@@ -22,7 +22,8 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\ExistsQuery;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 
-interface IFieldDefinitionAdapter {
+interface IFieldDefinitionAdapter
+{
 
     const ES_MAPPING_PROPERTY_STANDARD = "standard";
     const ES_MAPPING_PROPERTY_NOT_INHERITED = "notInherited";

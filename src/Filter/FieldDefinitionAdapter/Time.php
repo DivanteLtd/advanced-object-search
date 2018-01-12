@@ -15,11 +15,11 @@
 
 namespace AdvancedObjectSearchBundle\Filter\FieldDefinitionAdapter;
 
-
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Time extends Datetime implements IFieldDefinitionAdapter {
+class Time extends Datetime implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -33,9 +33,10 @@ class Time extends Datetime implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
@@ -44,17 +45,15 @@ class Time extends Datetime implements IFieldDefinitionAdapter {
 
         $getter = "get" . $this->fieldDefinition->getName();
         $valueObject = $object->$getter();
-        if($valueObject) {
+        if ($valueObject) {
             $valueObject = new \DateTime("0000-01-01T" . $valueObject);
             $value = $valueObject->format(\DateTime::ISO8601);
         }
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
         return $value;
     }
-
-
 }

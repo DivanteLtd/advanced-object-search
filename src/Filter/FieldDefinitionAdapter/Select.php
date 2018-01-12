@@ -21,7 +21,8 @@ use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Select extends DefaultAdapter implements IFieldDefinitionAdapter {
+class Select extends DefaultAdapter implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -33,8 +34,9 @@ class Select extends DefaultAdapter implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
-        if($this->considerInheritance) {
+    public function getESMapping()
+    {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -65,16 +67,17 @@ class Select extends DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
 
         $value = $this->fieldDefinition->getForWebserviceExport($object);
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
@@ -98,5 +101,4 @@ class Select extends DefaultAdapter implements IFieldDefinitionAdapter {
             ]
         )];
     }
-
 }

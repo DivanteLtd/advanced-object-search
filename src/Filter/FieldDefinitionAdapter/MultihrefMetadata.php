@@ -15,8 +15,8 @@
 
 namespace AdvancedObjectSearchBundle\Filter\FieldDefinitionAdapter;
 
-
-class MultihrefMetadata extends Href implements IFieldDefinitionAdapter {
+class MultihrefMetadata extends Href implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -24,5 +24,4 @@ class MultihrefMetadata extends Href implements IFieldDefinitionAdapter {
      * @var string
      */
     protected $fieldType = "multihrefMetadata";
-
 }

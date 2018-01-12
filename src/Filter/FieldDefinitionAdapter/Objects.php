@@ -19,7 +19,8 @@ use AdvancedObjectSearchBundle\Filter\FieldSelectionInformation;
 use AdvancedObjectSearchBundle\Filter\FilterEntry;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 
-class Objects extends Href implements IFieldDefinitionAdapter {
+class Objects extends Href implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -41,7 +42,7 @@ class Objects extends Href implements IFieldDefinitionAdapter {
         $allowedTypes[] = ["objects", "object_ids"];
         $allowedTypes[] = ["object_filter", "object_filter"];
 
-        foreach($this->fieldDefinition->getClasses() as $class) {
+        foreach ($this->fieldDefinition->getClasses() as $class) {
             $allowedClasses[] = $class['classes'];
         }
 
@@ -56,5 +57,4 @@ class Objects extends Href implements IFieldDefinitionAdapter {
             ]
         )];
     }
-
 }

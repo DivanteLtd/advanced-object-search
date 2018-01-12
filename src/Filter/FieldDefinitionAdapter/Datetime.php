@@ -21,7 +21,8 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Datetime extends Numeric implements IFieldDefinitionAdapter {
+class Datetime extends Numeric implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -33,8 +34,9 @@ class Datetime extends Numeric implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
-        if($this->considerInheritance) {
+    public function getESMapping()
+    {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -72,10 +74,10 @@ class Datetime extends Numeric implements IFieldDefinitionAdapter {
      * @param string $path
      * @return BuilderInterface
      */
-    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "") {
-        if(is_array($fieldFilter)) {
-
-            foreach($fieldFilter as &$value) {
+    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "")
+    {
+        if (is_array($fieldFilter)) {
+            foreach ($fieldFilter as &$value) {
                 $datetime = new \DateTime($value);
                 $value = $datetime->format(\DateTime::ISO8601);
             }
@@ -92,9 +94,10 @@ class Datetime extends Numeric implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
@@ -103,15 +106,14 @@ class Datetime extends Numeric implements IFieldDefinitionAdapter {
 
         $getter = "get" . $this->fieldDefinition->getName();
         $valueObject = $object->$getter();
-        if($valueObject) {
+        if ($valueObject) {
             $value = $valueObject->format(\DateTime::ISO8601);
         }
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
         return $value;
     }
-
 }

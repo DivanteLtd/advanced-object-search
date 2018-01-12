@@ -40,7 +40,7 @@ class UpdateMappingCommand extends AbstractCommand
 
         if ($input->getOption("classes")) {
             $classNames = explode(",", $input->getOption("classes"));
-            foreach($classNames as $name) {
+            foreach ($classNames as $name) {
                 $classes[] = ClassDefinition::getByName($name);
             }
         } else {
@@ -52,13 +52,11 @@ class UpdateMappingCommand extends AbstractCommand
         $classes = array_filter($classes);
 
         foreach ($classes as $class) {
-
             $indexName = $service->getIndexName($class->getName());
 
             $this->output->writeln("Processing " . $class->getName() . " -> index $indexName");
 
             $service->updateMapping($class);
-
         }
     }
 }

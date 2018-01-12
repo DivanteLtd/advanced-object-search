@@ -26,7 +26,8 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 
-class DefaultAdapter implements IFieldDefinitionAdapter {
+class DefaultAdapter implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -54,21 +55,24 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
      * DefaultAdapter constructor.
      * @param Service $service
      */
-    public function __construct(Service $service) {
+    public function __construct(Service $service)
+    {
         $this->service = $service;
     }
 
     /**
      * @param Data $fieldDefinition
      */
-    public function setFieldDefinition(Data $fieldDefinition) {
+    public function setFieldDefinition(Data $fieldDefinition)
+    {
         $this->fieldDefinition = $fieldDefinition;
     }
 
     /**
      * @param bool $considerInheritance
      */
-    public function setConsiderInheritance(bool $considerInheritance) {
+    public function setConsiderInheritance(bool $considerInheritance)
+    {
         $this->considerInheritance = $considerInheritance;
     }
 
@@ -76,9 +80,10 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
+    public function getESMapping()
+    {
 
-        if($this->considerInheritance) {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -115,16 +120,17 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
 
         $value = $this->fieldDefinition->getForWebserviceExport($object);
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
@@ -135,27 +141,26 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @return mixed
      */
-    public function getIndexData($object) {
+    public function getIndexData($object)
+    {
 
         $value = $this->doGetIndexDataValue($object, false);
 
-        if($this->considerInheritance) {
+        if ($this->considerInheritance) {
             $notInheritedValue = $this->doGetIndexDataValue($object, true);
 
             $returnValue = null;
-            if($value) {
+            if ($value) {
                 $returnValue[self::ES_MAPPING_PROPERTY_STANDARD] = $value;
             }
 
-            if($notInheritedValue) {
+            if ($notInheritedValue) {
                 $returnValue[self::ES_MAPPING_PROPERTY_NOT_INHERITED] = $notInheritedValue;
             }
 
             return $returnValue;
-
         } else {
-
-            if($value) {
+            if ($value) {
                 return $value;
             } else {
                 return null;
@@ -164,11 +169,12 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
     }
 
 
-    protected function buildQueryFieldPostfix($ignoreInheritance = false) {
+    protected function buildQueryFieldPostfix($ignoreInheritance = false)
+    {
         $postfix = "";
 
-        if($this->considerInheritance) {
-            if($ignoreInheritance) {
+        if ($this->considerInheritance) {
+            if ($ignoreInheritance) {
                 $postfix = "." . self::ES_MAPPING_PROPERTY_NOT_INHERITED;
             } else {
                 $postfix = "." . self::ES_MAPPING_PROPERTY_STANDARD;
@@ -190,7 +196,8 @@ class DefaultAdapter implements IFieldDefinitionAdapter {
      * @param string $path
      * @return BuilderInterface
      */
-    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "") {
+    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "")
+    {
         return new QueryStringQuery($fieldFilter, ["fields" => [$path . $this->fieldDefinition->getName() . $this->buildQueryFieldPostfix($ignoreInheritance)]]);
     }
 

@@ -35,9 +35,8 @@ class ProcessUpdateQueueCommand extends AbstractCommand
         $service = $this->getContainer()->get("bundle.advanced_object_search.service");
         $count = 1;
 
-        while($count) {
+        while ($count) {
             $count = $service->processUpdateQueue();
         }
-
     }
 }

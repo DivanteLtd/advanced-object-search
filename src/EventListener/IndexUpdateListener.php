@@ -15,7 +15,6 @@
 
 namespace AdvancedObjectSearchBundle\EventListener;
 
-
 use AdvancedObjectSearchBundle\Service;
 use Pimcore\Event\Model\DataObject\ClassDefinitionEvent;
 use Pimcore\Event\Model\DataObjectEvent;
@@ -43,7 +42,7 @@ class IndexUpdateListener
         AbstractObject::setGetInheritedValues(true);
 
         $object = $event->getObject();
-        if($object instanceof Concrete) {
+        if ($object instanceof Concrete) {
             $this->service->doUpdateIndexData($object);
         }
 
@@ -53,17 +52,19 @@ class IndexUpdateListener
     public function deleteObject(DataObjectEvent $event)
     {
         $object = $event->getObject();
-        if($object instanceof Concrete) {
+        if ($object instanceof Concrete) {
             $this->service->doDeleteFromIndex($object);
         }
     }
 
-    public function updateMapping(ClassDefinitionEvent $event) {
+    public function updateMapping(ClassDefinitionEvent $event)
+    {
         $classDefinition = $event->getClassDefinition();
         $this->service->updateMapping($classDefinition);
     }
 
-    public function deleteIndex(ClassDefinitionEvent $event) {
+    public function deleteIndex(ClassDefinitionEvent $event)
+    {
         $classDefinition = $event->getClassDefinition();
         try {
             $this->service->deleteIndex($classDefinition);
@@ -72,12 +73,13 @@ class IndexUpdateListener
         }
     }
 
-    public function registerMaintenanceJob(MaintenanceEvent $maintenanceEvent) {
+    public function registerMaintenanceJob(MaintenanceEvent $maintenanceEvent)
+    {
         $maintenanceEvent->getManager()->registerJob(new Job(get_class($this), [$this, "maintenance"]));
     }
 
-    public function maintenance() {
+    public function maintenance()
+    {
         $this->service->processUpdateQueue(500);
     }
-
 }

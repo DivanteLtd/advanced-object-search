@@ -147,7 +147,7 @@ class SavedSearch extends Model\AbstractModel
      */
     public function getOwner()
     {
-        if(empty($this->owner)) {
+        if (empty($this->owner)) {
             $this->owner = Model\User::getById($this->ownerId);
         }
         return $this->owner;
@@ -230,9 +230,10 @@ class SavedSearch extends Model\AbstractModel
     /**
      * @return Model\User[]
      */
-    public function getSharedUsers() {
+    public function getSharedUsers()
+    {
         $users = [];
-        foreach($this->sharedUserIds as $id) {
+        foreach ($this->sharedUserIds as $id) {
             $users[] = Model\User::getById($id);
         }
         return $users;
@@ -243,7 +244,7 @@ class SavedSearch extends Model\AbstractModel
      */
     public function setSharedUserIds($sharedUserIds)
     {
-        if(is_string($sharedUserIds) && !empty($sharedUserIds)) {
+        if (is_string($sharedUserIds) && !empty($sharedUserIds)) {
             $sharedUserIds = array_values(array_filter(explode(",", $sharedUserIds)));
         }
 
@@ -263,7 +264,7 @@ class SavedSearch extends Model\AbstractModel
      */
     public function setShortCutUserIds($shortCutUserIds)
     {
-        if(is_string($shortCutUserIds) && !empty($shortCutUserIds)) {
+        if (is_string($shortCutUserIds) && !empty($shortCutUserIds)) {
             $shortCutUserIds = explode(",", $shortCutUserIds);
         }
 
@@ -275,7 +276,8 @@ class SavedSearch extends Model\AbstractModel
      * @param Model\User $user
      * @return bool
      */
-    public function isInShortCutsForUser(Model\User $user) {
+    public function isInShortCutsForUser(Model\User $user)
+    {
         $userId = $user->getId();
         return $this->getShortCutUserIds() && in_array($userId, $this->getShortCutUserIds());
     }
@@ -283,11 +285,12 @@ class SavedSearch extends Model\AbstractModel
     /**
      * @param Model\User $user
      */
-    public function addShortCutForUser(Model\User $user) {
+    public function addShortCutForUser(Model\User $user)
+    {
         $userId = $user->getId();
 
         $shortCutUserIds = $this->getShortCutUserIds();
-        if(!$shortCutUserIds) {
+        if (!$shortCutUserIds) {
             $shortCutUserIds = [];
         }
         $shortCutUserIds[] = $userId;
@@ -297,14 +300,12 @@ class SavedSearch extends Model\AbstractModel
     /**
      * @param Model\User $user
      */
-    public function removeShortCutForUser(Model\User $user) {
+    public function removeShortCutForUser(Model\User $user)
+    {
         $userId = $user->getId();
         $shortCutUserIds = $this->getShortCutUserIds();
         $shortCutUserIds = array_flip($shortCutUserIds);
         unset($shortCutUserIds[$userId]);
         $this->setShortCutUserIds(array_filter(array_keys($shortCutUserIds)));
     }
-
-
-
 }

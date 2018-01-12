@@ -8,7 +8,6 @@
 
 namespace AdvancedObjectSearchBundle\Tools;
 
-
 use AdvancedObjectSearchBundle\AdvancedObjectSearchBundle;
 use Elasticsearch\Client;
 
@@ -23,9 +22,10 @@ class EsClientFactory
     /**
      * @return Client
      */
-    public static function getESClient() {
+    public static function getESClient()
+    {
 
-        if(empty(self::$esClient)) {
+        if (empty(self::$esClient)) {
             $config = AdvancedObjectSearchBundle::getConfig();
             self::$esClient = \Elasticsearch\ClientBuilder::create()->setHosts($config['hosts'])->build();
         }

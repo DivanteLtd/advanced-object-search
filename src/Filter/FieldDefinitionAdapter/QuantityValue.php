@@ -24,7 +24,8 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class QuantityValue extends Numeric implements IFieldDefinitionAdapter {
+class QuantityValue extends Numeric implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -36,8 +37,9 @@ class QuantityValue extends Numeric implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
-        if($this->considerInheritance) {
+    public function getESMapping()
+    {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -97,9 +99,10 @@ class QuantityValue extends Numeric implements IFieldDefinitionAdapter {
      * @param string $path
      * @return BuilderInterface
      */
-    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "") {
+    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "")
+    {
         $boolQuery = new BoolQuery();
-        if(is_array($fieldFilter) && is_array($fieldFilter['value'])) {
+        if (is_array($fieldFilter) && is_array($fieldFilter['value'])) {
             $boolQuery->add(new RangeQuery($path . $this->fieldDefinition->getName() . $this->buildQueryFieldPostfix($ignoreInheritance) . ".value", $fieldFilter["value"]));
         } else {
             $boolQuery->add(new TermQuery($path . $this->fieldDefinition->getName() . $this->buildQueryFieldPostfix($ignoreInheritance) . ".value", $fieldFilter["value"]));
@@ -131,9 +134,10 @@ class QuantityValue extends Numeric implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
@@ -142,12 +146,10 @@ class QuantityValue extends Numeric implements IFieldDefinitionAdapter {
         unset($value['unitAbbreviation']);
 
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
         return $value;
     }
-
-
 }

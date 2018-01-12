@@ -25,10 +25,11 @@ class AdvancedObjectSearchBundle extends AbstractPimcoreBundle
      * @var array
      */
     protected static $config;
-    public static function getConfig() {
-        if(empty(self::$config)) {
+    public static function getConfig()
+    {
+        if (empty(self::$config)) {
             $file = PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY . "/advancedobjectsearch/config.php";
-            if(file_exists($file)) {
+            if (file_exists($file)) {
                 $config = include($file);
             } else {
                 throw new \Exception($file . " doesn't exist");
@@ -53,20 +54,20 @@ class AdvancedObjectSearchBundle extends AbstractPimcoreBundle
     {
         return [
             '/bundles/advancedobjectsearch/js/startup.js',
-			'/bundles/advancedobjectsearch/js/selector.js',
-			'/bundles/advancedobjectsearch/js/helper.js',
-			'/bundles/advancedobjectsearch/js/searchConfigPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/conditionPanelContainerBuilder.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/conditionPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/resultPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/conditionAbstractPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/conditionEntryPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/conditionGroupPanel.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/default.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/localizedfields.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/numeric.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/href.js',
-			'/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/objects.js',
+            '/bundles/advancedobjectsearch/js/selector.js',
+            '/bundles/advancedobjectsearch/js/helper.js',
+            '/bundles/advancedobjectsearch/js/searchConfigPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/conditionPanelContainerBuilder.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/conditionPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/resultPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/conditionAbstractPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/conditionEntryPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/conditionGroupPanel.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/default.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/localizedfields.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/numeric.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/href.js',
+            '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/objects.js',
             '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/multihref.js',
             '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/fieldcollections.js',
             '/bundles/advancedobjectsearch/js/searchConfig/fieldConditionPanel/objectbricks.js',

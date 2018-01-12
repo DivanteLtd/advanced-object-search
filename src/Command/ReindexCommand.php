@@ -43,7 +43,7 @@ class ReindexCommand extends AbstractCommand
         $classes = [];
         if ($input->getOption("classes")) {
             $classNames = explode(",", $input->getOption("classes"));
-            foreach($classNames as $name) {
+            foreach ($classNames as $name) {
                 $classes[] = ClassDefinition::getByName($name);
             }
         } else {

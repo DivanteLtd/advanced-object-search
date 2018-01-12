@@ -18,7 +18,8 @@ namespace AdvancedObjectSearchBundle\Filter;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 
-class FilterEntry {
+class FilterEntry
+{
 
     const EXISTS = "exists";
     const NOT_EXISTS = "not_exists";
@@ -63,7 +64,7 @@ class FilterEntry {
      */
     public function __construct($fieldname, $filterEntryData, $operator = BoolQuery::MUST, $ignoreInheritance = false)
     {
-        if($operator) {
+        if ($operator) {
             $this->operator = $operator;
         }
         $this->fieldname = $fieldname;
@@ -79,10 +80,11 @@ class FilterEntry {
         return $this->operator;
     }
 
-    public function getOuterOperator() {
-        if($this->operator == self::EXISTS) {
+    public function getOuterOperator()
+    {
+        if ($this->operator == self::EXISTS) {
             return BoolQuery::MUST;
-        } else if($this->operator == self::NOT_EXISTS) {
+        } elseif ($this->operator == self::NOT_EXISTS) {
             return BoolQuery::MUST_NOT;
         } else {
             return $this->operator;
@@ -132,7 +134,8 @@ class FilterEntry {
     /**
      * @return bool
      */
-    public function isGroup() {
+    public function isGroup()
+    {
         return $this->fieldname == self::FIELDNAME_GROUP;
     }
 
@@ -143,5 +146,4 @@ class FilterEntry {
     {
         return $this->ignoreInheritance;
     }
-
 }

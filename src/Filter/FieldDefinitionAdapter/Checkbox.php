@@ -22,7 +22,8 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter {
+class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -35,9 +36,10 @@ class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
+    public function getESMapping()
+    {
 
-        if($this->considerInheritance) {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -65,16 +67,17 @@ class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
 
         $value = $this->fieldDefinition->getForWebserviceExport($object);
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 
@@ -86,11 +89,12 @@ class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @return mixed
      */
-    public function getIndexData($object) {
+    public function getIndexData($object)
+    {
 
         $value = $this->doGetIndexDataValue($object, false);
 
-        if($this->considerInheritance) {
+        if ($this->considerInheritance) {
             $notInheritedValue = $this->doGetIndexDataValue($object, true);
 
             $returnValue = [];
@@ -114,7 +118,8 @@ class Checkbox extends DefaultAdapter implements IFieldDefinitionAdapter {
      * @param string $path
      * @return BuilderInterface
      */
-    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "") {
+    public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "")
+    {
         return new TermQuery($path . $this->fieldDefinition->getName() . $this->buildQueryFieldPostfix($ignoreInheritance), $fieldFilter);
     }
 

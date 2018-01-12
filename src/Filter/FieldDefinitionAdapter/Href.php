@@ -25,7 +25,8 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
+class Href extends DefaultAdapter implements IFieldDefinitionAdapter
+{
 
     /**
      * field type for search frontend
@@ -37,8 +38,9 @@ class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
     /**
      * @return array
      */
-    public function getESMapping() {
-        if($this->considerInheritance) {
+    public function getESMapping()
+    {
+        if ($this->considerInheritance) {
             return [
                 $this->fieldDefinition->getName(),
                 [
@@ -75,7 +77,6 @@ class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
                 ]
             ];
         }
-
     }
 
 
@@ -105,33 +106,27 @@ class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
      */
     public function getQueryPart($fieldFilter, $ignoreInheritance = false, $path = "")
     {
-        if(is_array($fieldFilter)) {
-
+        if (is_array($fieldFilter)) {
             $path = $path . $this->fieldDefinition->getName() . $this->buildQueryFieldPostfix($ignoreInheritance);
 
             $boolQuery = new BoolQuery();
 
-            if($fieldFilter['id']) {
-
+            if ($fieldFilter['id']) {
                 $idArray = $fieldFilter['id'];
-                if(!is_array($idArray)) {
+                if (!is_array($idArray)) {
                     $idArray = [$idArray];
                 } else {
                     $idArray = array_filter($idArray);
                 }
-
-            } else if($fieldFilter['type'] == "object" && $fieldFilter['classId'] && ($fieldFilter['filters'] || $fieldFilter['fulltextSearchTerm'])) {
-
+            } elseif ($fieldFilter['type'] == "object" && $fieldFilter['classId'] && ($fieldFilter['filters'] || $fieldFilter['fulltextSearchTerm'])) {
                 $results = $this->service->doFilter($fieldFilter['classId'], $fieldFilter['filters'], $fieldFilter['fulltextSearchTerm']);
                 $idArray = $this->service->extractIdsFromResult($results);
-
-
             } else {
                 throw new \Exception("invalid filter entry definition " . print_r($fieldFilter, true));
             }
 
-            if($idArray) {
-                foreach($idArray as $id) {
+            if ($idArray) {
+                foreach ($idArray as $id) {
                     $innerBoolQuery = new BoolQuery();
                     $innerBoolQuery->add(new TermQuery($path . ".type", $fieldFilter['type']));
                     $innerBoolQuery->add(new TermQuery($path . ".id", $id));
@@ -158,17 +153,17 @@ class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
     {
         $allowedTypes = [];
         $allowedClasses = [];
-        if($this->fieldDefinition->getAssetsAllowed()) {
+        if ($this->fieldDefinition->getAssetsAllowed()) {
             $allowedTypes[] = ["asset", "asset_ids"];
         }
-        if($this->fieldDefinition->getDocumentsAllowed()) {
+        if ($this->fieldDefinition->getDocumentsAllowed()) {
             $allowedTypes[] = ["document", "document_ids"];
         }
-        if($this->fieldDefinition->getObjectsAllowed()) {
+        if ($this->fieldDefinition->getObjectsAllowed()) {
             $allowedTypes[] = ["object", "object_ids"];
             $allowedTypes[] = ["object_filter", "object_filter"];
 
-            foreach($this->fieldDefinition->getClasses() as $class) {
+            foreach ($this->fieldDefinition->getClasses() as $class) {
                 $allowedClasses[] = $class['classes'];
             }
         }
@@ -190,16 +185,17 @@ class Href extends DefaultAdapter implements IFieldDefinitionAdapter {
      * @param Concrete $object
      * @param bool $ignoreInheritance
      */
-    protected function doGetIndexDataValue($object, $ignoreInheritance = false) {
+    protected function doGetIndexDataValue($object, $ignoreInheritance = false)
+    {
         $inheritanceBackup = null;
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             $inheritanceBackup = AbstractObject::getGetInheritedValues();
             AbstractObject::setGetInheritedValues(false);
         }
 
         $value = $this->fieldDefinition->getForWebserviceExport($object);
 
-        if($ignoreInheritance) {
+        if ($ignoreInheritance) {
             AbstractObject::setGetInheritedValues($inheritanceBackup);
         }
 

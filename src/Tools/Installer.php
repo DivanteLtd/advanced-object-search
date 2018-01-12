@@ -20,14 +20,15 @@ use Pimcore\Config;
 use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
 use Pimcore\Extension\Bundle\Installer\Exception\InstallationException;
 
-class Installer extends AbstractInstaller {
+class Installer extends AbstractInstaller
+{
 
     const QUEUE_TABLE_NAME = "bundle_advancedobjectsearch_update_queue";
 
     public function install()
     {
 
-        if(!file_exists(PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY . "/advancedobjectsearch")) {
+        if (!file_exists(PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY . "/advancedobjectsearch")) {
             \Pimcore\File::mkdir(PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY . "/advancedobjectsearch");
             copy(__DIR__ . "/../Resources/install/config.php", PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY . "/advancedobjectsearch/config.php");
         }
@@ -61,20 +62,19 @@ class Installer extends AbstractInstaller {
         //insert permission
         $key = 'bundle_advancedsearch_search';
         $permission = new \Pimcore\Model\User\Permission\Definition();
-        $permission->setKey( $key );
+        $permission->setKey($key);
 
         $res = new \Pimcore\Model\User\Permission\Definition\Dao();
-        $res->configure( \Pimcore\Db::get() );
-        $res->setModel( $permission );
+        $res->configure(\Pimcore\Db::get());
+        $res->setModel($permission);
         $res->save();
 
 
-        if($this->isInstalled()){
+        if ($this->isInstalled()) {
             return true;
         } else {
             return false;
         }
-
     }
 
     public function needsReloadAfterInstall()
@@ -85,13 +85,13 @@ class Installer extends AbstractInstaller {
     public function isInstalled()
     {
         $result = null;
-        try{
-            if(Config::getSystemConfig()) {
+        try {
+            if (Config::getSystemConfig()) {
                 $result = \Pimcore\Db::get()->fetchAll("SHOW TABLES LIKE '" . self::QUEUE_TABLE_NAME . "';");
             }
-        } catch(\Exception $e){}
+        } catch (\Exception $e) {
+        }
         return !empty($result);
-
     }
 
     public function canBeInstalled()
@@ -112,9 +112,8 @@ class Installer extends AbstractInstaller {
 
         $db->query("DELETE FROM users_permission_definitions WHERE `key` = 'bundle_advancedsearch_search'");
 
-        if(self::isInstalled()){
+        if (self::isInstalled()) {
             throw new InstallationException("Could not be uninstalled.");
         }
     }
-
 }

@@ -15,7 +15,8 @@
 
 namespace AdvancedObjectSearchBundle\Filter;
 
-class FieldSelectionInformation {
+class FieldSelectionInformation
+{
 
     /**
      * @var string
@@ -114,7 +115,8 @@ class FieldSelectionInformation {
     }
 
 
-    public function toArray() {
+    public function toArray()
+    {
         return [
             'fieldName' => $this->fieldName,
             'fieldLabel' => $this->fieldLabel,
@@ -122,7 +124,4 @@ class FieldSelectionInformation {
             'context' => $this->context
         ];
     }
-
-
-
 }
