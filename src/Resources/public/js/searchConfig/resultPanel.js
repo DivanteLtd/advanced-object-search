@@ -15,7 +15,9 @@
 pimcore.registerNS("pimcore.bundle.advancedObjectSearch.searchConfig.resultPanel");
 pimcore.bundle.advancedObjectSearch.searchConfig.resultPanel = Class.create(pimcore.bundle.advancedObjectSearch.searchConfig.resultAbstractPanel, {
 
-    initialize: function (getSaveDataCallback, gridConfigData, portletMode) {
+    initialize: function ($super, getSaveDataCallback, gridConfigData, portletMode) {
+        $super();
+
         this.getSaveDataCallback = getSaveDataCallback;
         this.settings = {};
         this.element = {};
@@ -269,6 +271,7 @@ pimcore.bundle.advancedObjectSearch.searchConfig.resultPanel = Class.create(pimc
             tbars = [{
                 xtype: 'toolbar',
                 dock: 'top',
+                overflowHandler: 'scroller',
                 items: tbar
             }];
 
@@ -277,6 +280,7 @@ pimcore.bundle.advancedObjectSearch.searchConfig.resultPanel = Class.create(pimc
                     {
                         xtype: 'toolbar',
                         dock: 'top',
+                        overflowHandler: 'scroller',
                         items: secondaryTbar
                     }
                 );
@@ -392,7 +396,27 @@ pimcore.bundle.advancedObjectSearch.searchConfig.resultPanel = Class.create(pimc
         menu.showAt(e.pageX, e.pageY);
     },
 
-    batchPrepare: function (columnIndex, onlySelected, append, remove) {
+    batchPrepare: function (column, onlySelected, append, remove) {
+
+        var columnIndex;
+        if(typeof column != 'object') {
+            columnIndex = column;
+        } else {
+            var dataIndexName = column.dataIndex;
+            var gridColumns = this.grid.getColumns();
+            columnIndex = -1;
+            for (let i = 0; i < gridColumns.length; i++) {
+                let dataIndex = gridColumns[i].dataIndex;
+                if (dataIndex == dataIndexName) {
+                    columnIndex = i;
+                    break;
+                }
+            }
+            if (columnIndex < 0) {
+                return;
+            }
+        }
+
         // no batch for system properties
         if (this.systemColumns.indexOf(this.grid.getColumns()[columnIndex].dataIndex) > -1) {
             return;
